@@ -56,7 +56,7 @@ if st.button("Abschicken & Auswerten"):
     code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     st.success(f"Testcode: {code} – Danke fürs Ausfüllen!")
 
-    webhook_url = "https://script.google.com/macros/s/AKfycbzaOBStqCLygQdsBoRPCCGe5CSxIPAHpXp0wWNXCUjTFS3KtKNWUMMSuf2ZGZakEy-C/exec"
+    webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
 
     # Einzelantworten senden
     for eintrag in antworten:

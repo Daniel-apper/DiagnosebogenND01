@@ -8,8 +8,10 @@ from datetime import datetime
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
 # Logo einbinden
-st.image("Logo Vector_01.png", width=200, layout="centered")
-
+st.markdown(
+    "<div style='text-align: center;'><img src='Logo Vector_01.png' width='200'></div>",
+    unsafe_allow_html=True
+)
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]

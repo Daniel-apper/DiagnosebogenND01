@@ -56,24 +56,24 @@ if st.button("Abschicken & Auswerten"):
     code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     st.success(f"Testcode: {code} – Danke fürs Ausfüllen!")
 
-    zapier_url = "https://hooks.zapier.com/hooks/catch/7436424/27mj4vq/"
+    webhook_url = "https://script.google.com/macros/s/AKfycbzaOBStqCLygQdsBoRPCCGe5CSxIPAHpXp0wWNXCUjTFS3KtKNWUMMSuf2ZGZakEy-C/exec"
 
     # Einzelantworten senden
     for eintrag in antworten:
         payload = {
-            "typ": "antwort",
             "datum": datum,
             "testcode": code,
             "abschnitt": eintrag["abschnitt"],
             "fragenummer": eintrag["nummer"],
             "frage": eintrag["frage"],
             "antwort": eintrag["antwort"],
-            "score": eintrag["score"]
+            "score": eintrag["score"],
+            "typ": "antwort"
         }
         try:
-            requests.post(zapier_url, json=payload)
+            requests.post(webhook_url, json=payload)
         except:
-            st.warning("Fehler beim Senden einer Antwort an Zapier.")
+            st.warning("Fehler beim Senden einer Antwort an Google Sheet.")
 
     # Abschnittsauswertung senden
     for abschnitt, (score, maxscore) in abschnittsscores.items():
@@ -86,18 +86,18 @@ if st.button("Abschicken & Auswerten"):
             einstufung = "🟢 Unauffällig"
 
         summary_payload = {
-            "typ": "abschnitt",
             "datum": datum,
             "testcode": code,
             "abschnitt": abschnitt,
             "score": score,
             "maxscore": maxscore,
             "prozent": round(prozent, 2),
-            "einstufung": einstufung
+            "einstufung": einstufung,
+            "typ": "abschnitt"
         }
         try:
-            requests.post(zapier_url, json=summary_payload)
+            requests.post(webhook_url, json=summary_payload)
         except:
-            st.warning(f"Fehler beim Senden der Auswertung zu {abschnitt} an Zapier.")
+            st.warning(f"Fehler beim Senden der Auswertung zu {abschnitt}.")
 
     st.balloons()

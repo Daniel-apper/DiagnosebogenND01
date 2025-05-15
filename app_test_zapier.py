@@ -7,8 +7,11 @@ from datetime import datetime
 
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
-# Logo einbinden
-st.image("Logo Vector_01.png", width=200)
+# Zentriertes Logo
+st.markdown(
+    "<div style='text-align: center;'><img src='Logo Vector_01.png' width='200'></div>",
+    unsafe_allow_html=True
+)
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]
@@ -133,7 +136,6 @@ abschnitte = {
     ]
 }
 
-
 antworten = []
 abschnittsscores = {}
 frage_nummer = 1
@@ -178,6 +180,7 @@ if st.button("Abschicken & Auswerten"):
 
     st.success("Die Daten wurden erfolgreich übermittelt. Bitte merke dir die Testnummer.")
     st.info(f"Dein persönlicher Testcode: **{code}**")
+    st.balloons()
 
     st.subheader("Ergebnisse pro Abschnitt")
     for abschnitt, (score, maxscore) in abschnittsscores.items():

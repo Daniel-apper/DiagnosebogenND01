@@ -8,7 +8,7 @@ from datetime import datetime
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
 # Logo einbinden
-st.image("Logo Vector_01.png", width=200)
+st.image("Logo Vector_01.png", width=200, layout="centered")
 
 st.title("Selbsteinschätzung: Testversion")
 

@@ -35,7 +35,7 @@ if st.button("Abschicken & Auswerten"):
     st.success(f"Testcode: {code} – Danke fürs Ausfüllen!")
 
     # Webhook (anpassen auf deinen echten Zapier-Link!)
-    zapier_url = "https://hooks.zapier.com/hooks/catch/7436424/27unfyd/"
+    zapier_url = "https://hooks.zapier.com/hooks/catch/7436424/27mj4vq/"
 
     for nr, (frage, antwort, score) in enumerate(antworten, 1):
         payload = {

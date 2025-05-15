@@ -11,7 +11,6 @@ st.title("Selbsteinschätzung: Testversion")
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]
 wertung = {"Trifft gar nicht zu": 1, "Trifft wenig zu": 2, "Teils/teils": 3, "Trifft zu": 4, "Trifft völlig zu": 5}
 
-# Strukturierte Abschnitte
 abschnitte = {
     "Soziale Kommunikation": [
         "Ich finde es anstrengend, Gespräche in Gruppen zu führen.",
@@ -58,7 +57,8 @@ if st.button("Abschicken & Auswerten"):
 
     webhook_url = "https://script.google.com/macros/library/d/1UAWELk9XSOHdqsDco6tPzm8klNle0ifM47IVVoHmIZJ2mLX9Nl9k7MQp/1"
 
-    # Einzelantworten senden
+    st.subheader("Datenübertragung an Google Sheets")
+
     for eintrag in antworten:
         payload = {
             "datum": datum,
@@ -71,11 +71,12 @@ if st.button("Abschicken & Auswerten"):
             "typ": "antwort"
         }
         try:
-            requests.post(webhook_url, json=payload)
-        except:
-            st.warning("Fehler beim Senden einer Antwort an Google Sheet.")
+            response = requests.post(webhook_url, json=payload)
+            if response.status_code != 200:
+                st.error(f"Antwort {eintrag['nummer']}: Fehler {response.status_code} – {response.text}")
+        except Exception as e:
+            st.error(f"Antwort {eintrag['nummer']}: Ausnahme – {e}")
 
-    # Abschnittsauswertung senden
     for abschnitt, (score, maxscore) in abschnittsscores.items():
         prozent = (score / maxscore) * 100
         if prozent >= 80:
@@ -96,8 +97,10 @@ if st.button("Abschicken & Auswerten"):
             "typ": "abschnitt"
         }
         try:
-            requests.post(webhook_url, json=summary_payload)
-        except:
-            st.warning(f"Fehler beim Senden der Auswertung zu {abschnitt}.")
+            response = requests.post(webhook_url, json=summary_payload)
+            if response.status_code != 200:
+                st.error(f"Abschnitt {abschnitt}: Fehler {response.status_code} – {response.text}")
+        except Exception as e:
+            st.error(f"Abschnitt {abschnitt}: Ausnahme – {e}")
 
     st.balloons()

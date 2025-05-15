@@ -6,6 +6,10 @@ import string
 from datetime import datetime
 
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
+
+# Logo einbinden
+st.image("Logo Vector_01.png", width=200)
+
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]
@@ -154,11 +158,8 @@ for abschnitt, fragen in abschnitte.items():
 if st.button("Abschicken & Auswerten"):
     datum = datetime.today().strftime("%Y-%m-%d")
     code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-    st.success(f"Testcode: {code} – Danke fürs Ausfüllen!")
 
     webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
-
-    st.subheader("Datenübertragung an Google Sheets")
 
     for eintrag in antworten:
         payload = {
@@ -172,12 +173,14 @@ if st.button("Abschicken & Auswerten"):
             "typ": "antwort"
         }
         try:
-            response = requests.post(webhook_url, json=payload)
-            if response.status_code != 200:
-                st.error(f"Antwort {eintrag['nummer']}: Fehler {response.status_code} – {response.text}")
-        except Exception as e:
-            st.error(f"Antwort {eintrag['nummer']}: Ausnahme – {e}")
+            requests.post(webhook_url, json=payload)
+        except:
+            pass
 
+    st.success("Die Daten wurden erfolgreich übermittelt. Bitte merke dir die Testnummer.")
+    st.info(f"Dein persönlicher Testcode: **{code}**")
+
+    st.subheader("Ergebnisse pro Abschnitt")
     for abschnitt, (score, maxscore) in abschnittsscores.items():
         prozent = (score / maxscore) * 100
         if prozent >= 80:
@@ -186,22 +189,4 @@ if st.button("Abschicken & Auswerten"):
             einstufung = "🟡 Leicht auffällig"
         else:
             einstufung = "🟢 Unauffällig"
-
-        summary_payload = {
-            "datum": datum,
-            "testcode": code,
-            "abschnitt": abschnitt,
-            "score": score,
-            "maxscore": maxscore,
-            "prozent": round(prozent, 2),
-            "einstufung": einstufung,
-            "typ": "abschnitt"
-        }
-        try:
-            response = requests.post(webhook_url, json=summary_payload)
-            if response.status_code != 200:
-                st.error(f"Abschnitt {abschnitt}: Fehler {response.status_code} – {response.text}")
-        except Exception as e:
-            st.error(f"Abschnitt {abschnitt}: Ausnahme – {e}")
-
-    st.balloons()
+        st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")

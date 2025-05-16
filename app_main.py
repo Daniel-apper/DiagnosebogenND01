@@ -4,6 +4,19 @@ import requests
 import random
 import string
 from datetime import datetime
+import importlib
+
+# Benutzer wählt Version
+version = st.selectbox("Welche Version möchtest du nutzen?", ["Vollversion", "Testversion (10 Fragen)"])
+
+if version == "Vollversion":
+    abschnittsmodul = importlib.import_module("abschnitte_fragen")
+else:
+    abschnittsmodul = importlib.import_module("abschnitte_fragen_kurz")
+
+abschnitte = abschnittsmodul.abschnitte
+
+
 
 
 

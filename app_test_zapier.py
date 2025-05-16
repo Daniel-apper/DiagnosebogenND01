@@ -8,9 +8,8 @@ import importlib
 
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
-# Logo einbinden und zentrieren
-st.markdown("<div style='text-align: center'><img src='https://raw.githubusercontent.com/Daniel-apper/Diagnosebogen-Autismus/main/Logo%20Vector_01.png' width='200'></div>", unsafe_allow_html=True)
-
+# Logo einbinden
+st.image("Logo Vector_01.png", width=200)
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]

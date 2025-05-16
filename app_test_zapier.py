@@ -94,9 +94,9 @@ if st.button("Abschicken & Auswerten"):
     st.success("Die Daten wurden erfolgreich übermittelt. Bitte merke dir die Testnummer.")
     st.info(f"Dein persönlicher Testcode: **{code}**")
     st.balloons()
-
+    
     st.subheader("Ergebnisse pro Abschnitt")
-        for abschnitt, (score, maxscore) in abschnittsscores.items():
+            for abschnitt, (score, maxscore) in abschnittsscores.items():
             prozent = (score / maxscore) * 100
             if prozent >= 80:
                 einstufung = "🔴 Deutlich auffällig"
@@ -108,7 +108,7 @@ if st.button("Abschicken & Auswerten"):
                 einstufung = "🟢 Unauffällig"
                 farbe = "grün"
 
-            st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")
+    st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")
 
             payload = {
                 "datum": datum,
@@ -125,3 +125,6 @@ if st.button("Abschicken & Auswerten"):
                 requests.post(webhook_url, json=payload)
             except Exception as e:
                 st.error(f"Fehler beim Senden der Abschnittsdaten: {e}")
+
+
+   

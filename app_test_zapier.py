@@ -48,7 +48,7 @@ if st.button("Abschicken & Auswerten"):
     with st.spinner("Geschafft! Bitte habe einen Augenblick Geduld. Sobald die Daten übertragen sind, wird hier die Auswertung angezeigt. Bitte Fragebogen nicht verlassen."):
         datum = datetime.today().strftime("%Y-%m-%d")
         code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-        webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
+        webhook_url = "https://script.google.com/macros/s/AKfycbxSbdM0ezgfpMl7hc49v7Z6MzEMpqELWBxyGXRVXyyIwd9w_mbd4XBH7T6U6D6w_KeEBw/exec"
 
         # Einzelantworten senden
         for eintrag in antworten:

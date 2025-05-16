@@ -95,7 +95,7 @@ if st.button("Abschicken & Auswerten"):
     st.info(f"Dein persönlicher Testcode: **{code}**")
     st.balloons()
 
-     st.subheader("Ergebnisse pro Abschnitt")
+    st.subheader("Ergebnisse pro Abschnitt")
         for abschnitt, (score, maxscore) in abschnittsscores.items():
             prozent = (score / maxscore) * 100
             if prozent >= 80:

@@ -104,4 +104,4 @@ if st.button("Abschicken & Auswerten"):
             einstufung = "🟡 Leicht auffällig"
         else:
             einstufung = "🟢 Unauffällig"
-        st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}"
+        st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")

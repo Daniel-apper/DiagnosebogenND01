@@ -4,21 +4,27 @@ import requests
 import random
 import string
 from datetime import datetime
+import importlib
 
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
-# Zentriertes Logo
-st.markdown(
-    "<div style='text-align: center;'><img src='Logo Vector_01.png' width='200'></div>",
-    unsafe_allow_html=True
-)
+# Logo einbinden und zentrieren
+st.markdown("<div style='text-align: center'><img src='https://raw.githubusercontent.com/Daniel-apper/Diagnosebogen-Autismus/main/Logo%20Vector_01.png' width='200'></div>", unsafe_allow_html=True)
+
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]
 wertung = {"Trifft gar nicht zu": 1, "Trifft wenig zu": 2, "Teils/teils": 3, "Trifft zu": 4, "Trifft völlig zu": 5}
 
-# Abschnittsdaten importieren aus externer Datei (Platzhalter: hier würden alle 90 Fragen stehen)
-from abschnitte_fragen import abschnitte
+# Auswahl der Version
+version = st.selectbox("Welche Version möchtest du nutzen?", ["Vollversion", "Testversion (10 Fragen)"])
+
+if version == "Vollversion":
+    abschnittsmodul = importlib.import_module("abschnitte_fragen")
+else:
+    abschnittsmodul = importlib.import_module("abschnitte_fragen_kurz")
+
+abschnitte = abschnittsmodul.abschnitte
 
 antworten = []
 abschnittsscores = {}

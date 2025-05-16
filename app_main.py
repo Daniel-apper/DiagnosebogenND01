@@ -9,16 +9,6 @@ import importlib
 # Benutzer wählt Version
 version = st.selectbox("Welche Version möchtest du nutzen?", ["Vollversion", "Testversion (10 Fragen)"])
 
-if version == "Vollversion":
-    abschnittsmodul = importlib.import_module("abschnitte_fragen")
-else:
-    abschnittsmodul = importlib.import_module("abschnitte_fragen_kurz")
-
-abschnitte = abschnittsmodul.abschnitte
-
-
-
-
 
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
@@ -29,7 +19,12 @@ st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]
 wertung = {"Trifft gar nicht zu": 1, "Trifft wenig zu": 2, "Teils/teils": 3, "Trifft zu": 4, "Trifft völlig zu": 5}
-from abschnitte_fragen import abschnitte
+if version == "Vollversion":
+    abschnittsmodul = importlib.import_module("abschnitte_fragen")
+else:
+    abschnittsmodul = importlib.import_module("abschnitte_fragen_kurz")
+    abschnitte = abschnittsmodul.abschnitte
+
 
 antworten = []
 abschnittsscores = {}

@@ -46,50 +46,50 @@ for abschnitt, fragen in abschnitte.items():
     abschnittsscores[abschnitt] = (score, len(fragen) * 5)
 
 if st.button("Abschicken & Auswerten"):
-    datum = datetime.today().strftime("%Y-%m-%d")
-    code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    with st.spinner("Geschafft! Bitte habe einen Augenblick Geduld. Sobald die Daten übertragen sind, wird hier die Auswertung angezeigt. Bitte Fragebogen nicht verlassen."):
+        datum = datetime.today().strftime("%Y-%m-%d")
+        code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
 
-    webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
+        for eintrag in antworten:
+            payload = {
+                "datum": datum,
+                "testcode": code,
+                "abschnitt": eintrag["abschnitt"],
+                "fragenummer": eintrag["nummer"],
+                "frage": eintrag["frage"],
+                "antwort": eintrag["antwort"],
+                "score": eintrag["score"],
+                "typ": "antwort"
+            }
+            try:
+                requests.post(webhook_url, json=payload)
+            except Exception as e:
+                st.error(f"Fehler beim Senden der Antwort: {e}")
 
-    for eintrag in antworten:
-        payload = {
-            "datum": datum,
-            "testcode": code,
-            "abschnitt": eintrag["abschnitt"],
-            "fragenummer": eintrag["nummer"],
-            "frage": eintrag["frage"],
-            "antwort": eintrag["antwort"],
-            "score": eintrag["score"],
-            "typ": "antwort"
-        }
-        try:
-            requests.post(webhook_url, json=payload)
-        except Exception as e:
-            st.error(f"Fehler beim Senden der Antwort: {e}")
+        for abschnitt, (score, maxscore) in abschnittsscores.items():
+            prozent = (score / maxscore) * 100
+            if prozent >= 80:
+                einstufung = "Deutlich auffällig"
+            elif prozent >= 60:
+                einstufung = "Leicht auffällig"
+            else:
+                einstufung = "Unauffällig"
 
-    for abschnitt, (score, maxscore) in abschnittsscores.items():
-        prozent = (score / maxscore) * 100
-        if prozent >= 80:
-            einstufung = "Deutlich auffällig"
-        elif prozent >= 60:
-            einstufung = "Leicht auffällig"
-        else:
-            einstufung = "Unauffällig"
-
-        payload = {
-            "datum": datum,
-            "testcode": code,
-            "abschnitt": abschnitt,
-            "score": score,
-            "maxscore": maxscore,
-            "prozent": prozent,
-            "bewertung": einstufung,
-            "typ": "abschnitt"
-        }
-        try:
-            requests.post(webhook_url, json=payload)
-        except Exception as e:
-            st.error(f"Fehler beim Senden der Abschnittsdaten: {e}")
+            payload = {
+                "datum": datum,
+                "testcode": code,
+                "abschnitt": abschnitt,
+                "score": score,
+                "maxscore": maxscore,
+                "prozent": prozent,
+                "bewertung": einstufung,
+                "typ": "abschnitt"
+            }
+            try:
+                requests.post(webhook_url, json=payload)
+            except Exception as e:
+                st.error(f"Fehler beim Senden der Abschnittsdaten: {e}")
 
     st.success("Die Daten wurden erfolgreich übermittelt. Bitte merke dir die Testnummer.")
     st.info(f"Dein persönlicher Testcode: **{code}**")
@@ -104,4 +104,4 @@ if st.button("Abschicken & Auswerten"):
             einstufung = "🟡 Leicht auffällig"
         else:
             einstufung = "🟢 Unauffällig"
-        st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")
+        st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}"

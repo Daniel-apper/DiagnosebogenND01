@@ -1,4 +1,3 @@
-
 import streamlit as st
 import requests
 import random
@@ -51,6 +50,7 @@ if st.button("Abschicken & Auswerten"):
         code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
 
+        # Antworten einzeln senden
         for eintrag in antworten:
             payload = {
                 "datum": datum,
@@ -67,36 +67,12 @@ if st.button("Abschicken & Auswerten"):
             except Exception as e:
                 st.error(f"Fehler beim Senden der Antwort: {e}")
 
+        st.success("Die Daten wurden erfolgreich übermittelt. Bitte merke dir die Testnummer.")
+        st.info(f"Dein persönlicher Testcode: **{code}**")
+        st.balloons()
+
+        st.subheader("Ergebnisse pro Abschnitt")
         for abschnitt, (score, maxscore) in abschnittsscores.items():
-            prozent = (score / maxscore) * 100
-            if prozent >= 80:
-                einstufung = "Deutlich auffällig"
-            elif prozent >= 60:
-                einstufung = "Leicht auffällig"
-            else:
-                einstufung = "Unauffällig"
-
-            payload = {
-                "datum": datum,
-                "testcode": code,
-                "abschnitt": abschnitt,
-                "score": score,
-                "maxscore": maxscore,
-                "prozent": prozent,
-                "bewertung": einstufung,
-                "typ": "abschnitt"
-            }
-            try:
-                requests.post(webhook_url, json=payload)
-            except Exception as e:
-                st.error(f"Fehler beim Senden der Abschnittsdaten: {e}")
-
-    st.success("Die Daten wurden erfolgreich übermittelt. Bitte merke dir die Testnummer.")
-    st.info(f"Dein persönlicher Testcode: **{code}**")
-    st.balloons()
-    
-    st.subheader("Ergebnisse pro Abschnitt")
-            for abschnitt, (score, maxscore) in abschnittsscores.items():
             prozent = (score / maxscore) * 100
             if prozent >= 80:
                 einstufung = "🔴 Deutlich auffällig"
@@ -108,8 +84,9 @@ if st.button("Abschicken & Auswerten"):
                 einstufung = "🟢 Unauffällig"
                 farbe = "grün"
 
-    st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")
+            st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")
 
+            # Abschnitts-Ergebnis ebenfalls übertragen
             payload = {
                 "datum": datum,
                 "testcode": code,
@@ -125,6 +102,3 @@ if st.button("Abschicken & Auswerten"):
                 requests.post(webhook_url, json=payload)
             except Exception as e:
                 st.error(f"Fehler beim Senden der Abschnittsdaten: {e}")
-
-
-   

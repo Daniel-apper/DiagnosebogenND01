@@ -11,7 +11,7 @@ st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
 # Logo einbinden
 st.image("Logo Vector_01.png", width=200)
-)
+
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]

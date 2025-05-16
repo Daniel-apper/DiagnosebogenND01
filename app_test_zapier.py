@@ -9,10 +9,8 @@ from datetime import datetime
 
 st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
-# Zentriertes Logo
-st.markdown(
-    "<div style='text-align: center;'><img src='Logo Vector_01.png' width='200'></div>",
-    unsafe_allow_html=True
+# Logo einbinden
+st.image("Logo Vector_01.png", width=200)
 )
 st.title("Selbsteinschätzung: Testversion")
 

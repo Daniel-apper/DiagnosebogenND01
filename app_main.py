@@ -18,7 +18,7 @@ antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Tri
 wertung = {"Trifft gar nicht zu": 1, "Trifft wenig zu": 2, "Teils/teils": 3, "Trifft zu": 4, "Trifft völlig zu": 5}
 
 # Abschnittsdaten importieren aus externer Datei (Platzhalter: hier würden alle 90 Fragen stehen)
-from abschnitte_fragen_kurz import abschnitte
+from abschnitte_fragen import abschnitte
 
 antworten = []
 abschnittsscores = {}

@@ -9,7 +9,6 @@ st.set_page_config(page_title="Test: Neurodiversität", layout="centered")
 
 # Logo einbinden
 st.image("Logo Vector_01.png", width=200)
-
 st.title("Selbsteinschätzung: Testversion")
 
 antwortoptionen = ["Trifft gar nicht zu", "Trifft wenig zu", "Teils/teils", "Trifft zu", "Trifft völlig zu"]
@@ -51,7 +50,7 @@ if st.button("Abschicken & Auswerten"):
         code = "SATT-" + ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         webhook_url = "https://script.google.com/macros/s/AKfycbxTwgNRJLpNPkgrc9lkeQnGo65fbyVBMKs-O3FNZjjf3FKQKWNliN-V7eMBQ-TN6ck58g/exec"
 
-        # Einzelergebnisse senden
+        # Einzelantworten senden
         for eintrag in antworten:
             payload = {
                 "datum": datum,
@@ -72,6 +71,7 @@ if st.button("Abschicken & Auswerten"):
         st.info(f"Dein persönlicher Testcode: **{code}**")
         st.balloons()
 
+        # Auswertung anzeigen und Abschnittsbewertungen übertragen
         st.subheader("Ergebnisse pro Abschnitt")
         for abschnitt, (score, maxscore) in abschnittsscores.items():
             prozent = (score / maxscore) * 100
@@ -87,7 +87,7 @@ if st.button("Abschicken & Auswerten"):
 
             st.write(f"**{abschnitt}**: {score} von {maxscore} Punkten → {einstufung}")
 
-            payload = {
+            auswertung_payload = {
                 "datum": datum,
                 "testcode": code,
                 "abschnitt": abschnitt,
@@ -99,8 +99,8 @@ if st.button("Abschicken & Auswerten"):
                 "typ": "abschnitt"
             }
             try:
-                r = requests.post(webhook_url, json=payload)
+                r = requests.post(webhook_url, json=auswertung_payload)
                 if r.status_code != 200:
-                    st.warning(f"Warnung: Abschnitts-Upload fehlgeschlagen für {abschnitt} (Status: {r.status_code})")
+                    st.warning(f"Abschnitt **{abschnitt}** konnte nicht gespeichert werden (Status: {r.status_code})")
             except Exception as e:
-                st.error(f"Fehler beim Senden der Abschnittsdaten: {e}")
+                st.error(f"Fehler beim Senden der Abschnittsauswertung: {e}")
